@@ -1,5 +1,15 @@
 # Tablet Price Monitor
 
+**🚧 SESSION STATUS (20 Dec 2025):**
+- ✅ MVP COMPLETE! Core functionality working
+- ✅ Amazon scraper implemented and tested (finds real prices: €505.80, €249.99)
+- ✅ Orchestrator with dependency injection pattern
+- ✅ Email notifications (tested with Ethereal)
+- ✅ Filtering logic for threshold checks
+- ✅ All tests passing (17/17)
+- ⚠️ Main script (index.ts) created but needs testing/refinement
+- 📝 Next: Test full end-to-end flow, verify email with real SMTP
+
 Automated price monitoring for Lenovo Tab P12 (128GB/256GB) across 5 Italian retailers with email alerts and price history tracking.
 
 ## Product Information
