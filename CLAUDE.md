@@ -59,44 +59,11 @@ tablet-checkout/
 └── README.md
 ```
 
-## Configuration Example
+## Development philosophy
 
-```typescript
-// src/config.ts
-export const PRODUCTS = {
-  '128GB': { sku: 'ZACH0112SE', threshold: 350 },
-  '256GB': { sku: 'ZACH0204SE', threshold: 400 }
-};
-
-export const EMAIL_CONFIG = {
-  recipient: process.env.ALERT_EMAIL || '',
-  from: 'tablet-monitor@noreply.com'
-};
-```
-
-## Price History Format
-
-```json
-{
-  "lastUpdated": "2025-12-19T10:00:00Z",
-  "prices": [
-    {
-      "date": "2025-12-19",
-      "model": "128GB",
-      "results": [
-        {
-          "site": "Amazon.it",
-          "price": 364,
-          "available": true,
-          "url": "https://amazon.it/..."
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Development Approach: Test-Driven Development (TDD)
+- **TDD approach** - Write tests first for all features
+- **Commit early and often**
+- **Build one feature at a time**
 
 We follow TDD methodology:
 
@@ -124,47 +91,24 @@ We follow TDD methodology:
 - Mock nodemailer for email testing
 - Mock file system for storage tests
 
-## Implementation Steps (TDD)
+## Implementation Plan
 
-### Phase 1: Core Infrastructure
-1. Setup project: package.json, tsconfig, jest config
-2. **Test**: Config module loads thresholds correctly
-3. **Implement**: Config module
-4. **Test**: Storage reads/writes price history
-5. **Implement**: Storage module
+- Throwaway Amazon test - verify site accessibility
+- Orchestrator - run scrapers, check thresholds
+- Notifications - email alerts
+- Amazon scraper - proper implementation
+- GitHub Actions automation
+- Additional scrapers (Trovaprezzi, Idealo, etc.)
+- Price history tracking
 
-### Phase 2: Scrapers (One at a Time)
-For each scraper:
-1. **Test**: Scraper returns PriceResult with mocked HTML
-2. **Implement**: HTML parsing logic
-3. **Test**: Error handling (timeout, 404, invalid HTML)
-4. **Implement**: Retry logic and error cases
-5. **Test**: URL construction for different SKUs
-6. **Implement**: URL builder
+## Error Handling Philosophy
 
-Start with Amazon (simplest), then add others incrementally.
+- **Individual failures don't crash the system**
+- Log all errors to console (visible in GitHub Actions)
+- Email sent even with partial data
+- Price history always saved (even if some scrapers fail)
+- Clear error messages for debugging
 
-### Phase 3: Orchestration
-1. **Test**: Main runs all scrapers in parallel
-2. **Implement**: Orchestrator with Promise.all
-3. **Test**: Results aggregation and filtering
-4. **Implement**: Result processing
-5. **Test**: Price history update after check
-6. **Implement**: Storage integration
-
-### Phase 4: Notifications
-1. **Test**: Email format with price table (mocked SMTP)
-2. **Implement**: HTML email template
-3. **Test**: Only sends when threshold met
-4. **Implement**: Conditional sending logic
-5. **Test**: Email with partial data (some scrapers failed)
-6. **Implement**: Error-resilient formatting
-
-### Phase 5: GitHub Actions
-1. Create workflow YAML
-2. Test with manual trigger
-3. Add scheduled cron
-4. Test auto-commit of price data
 
 ## Anti-Bot Measures
 
@@ -228,48 +172,4 @@ npm start
 npm test -- scrapers/amazon
 ```
 
-## Error Handling Philosophy
 
-- **Individual failures don't crash the system**
-- Log all errors to console (visible in GitHub Actions)
-- Email sent even with partial data
-- Price history always saved (even if some scrapers fail)
-- Clear error messages for debugging
-
-## Next Steps
-
-1. Initialize Node/TypeScript project
-2. Setup Jest for testing
-3. Implement base interfaces (TDD)
-4. Build Amazon scraper first (simplest)
-5. Add remaining scrapers incrementally
-6. Integrate email notifications
-7. Setup GitHub Actions
-8. Configure secrets and test end-to-end
-
----
-
-## Current Status
-
-**Setup Complete:**
-- ✅ GitHub repo created: https://github.com/bigstones84/tablet-checkout
-- ✅ Local git configured (user: bigstones84, local credential helper)
-- ✅ Documentation committed and pushed
-- ✅ Ready to start implementation
-
-**Next Session - Start Here:**
-1. Initialize Node.js project: `npm init -y`
-2. Install dependencies: `npm install --save-dev typescript @types/node tsx jest @jest/globals @types/jest`
-3. Install runtime deps: `npm install axios cheerio nodemailer`
-4. Setup tsconfig.json and jest.config.js
-5. Begin TDD with Phase 1: Config module tests
-
-**Important Notes:**
-- Git credential helper configured for **this repo only** (`.git/credentials`)
-- Won't interfere with work account (apietroni51)
-- Fine-grained PAT has Contents: Read+Write permission
-
----
-
-**Created:** 19 December 2025
-**Development Approach:** Test-Driven Development
