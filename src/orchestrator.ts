@@ -1,18 +1,19 @@
-import { PriceResult } from './types';
+import { PriceResult, ScraperFunction } from './types';
 import { PRODUCTS } from './config';
-import { scrapeStub } from './scrapers/stub';
 
-export async function checkPrices(): Promise<PriceResult[]> {
+export async function checkPrices(scrapers: ScraperFunction[]): Promise<PriceResult[]> {
   const results: PriceResult[] = [];
 
-  // For now, just use stub scraper for each product
+  // Run each scraper for each product
   for (const [model, config] of Object.entries(PRODUCTS)) {
-    try {
-      const result = await scrapeStub(config.sku);
-      results.push(result);
-    } catch (error) {
-      console.error(`Error scraping ${model}:`, error);
-      // Continue with other products even if one fails
+    for (const scraper of scrapers) {
+      try {
+        const result = await scraper(config.sku);
+        results.push(result);
+      } catch (error) {
+        console.error(`Error scraping ${model}:`, error);
+        // Continue with other scrapers even if one fails
+      }
     }
   }
 
