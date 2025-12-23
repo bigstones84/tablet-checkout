@@ -2,20 +2,26 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import currency from 'currency.js';
 import { PriceResult } from '../types';
-
-// ASIN (Amazon Standard Identification Number) mapping for each product
-// Using direct ASINs is more reliable than searching by SKU
-// TODO: Externalize this configuration to a separate file
-const PRODUCT_ASINS: Record<string, string> = {
-  'samsung-tab-s10-fe-256gb': 'B0F3885QQK',
-  'test-product': 'TEST_ASIN_123' // For unit tests
-};
+import { PRODUCTS } from '../config';
 
 export async function scrapeAmazon(productKey: string): Promise<PriceResult> {
-  const asin = PRODUCT_ASINS[productKey];
+  const productConfig = PRODUCTS[productKey];
+
+  if (!productConfig) {
+    console.error(`Product not found in config: ${productKey}`);
+    return {
+      site: 'Amazon.it',
+      price: null,
+      available: false,
+      url: `https://www.amazon.it/s?k=${productKey}`,
+      productKey
+    };
+  }
+
+  const asin = productConfig.retailers.amazon?.asin;
 
   if (!asin) {
-    console.error(`No ASIN mapping found for product: ${productKey}`);
+    console.error(`No Amazon ASIN configured for product: ${productKey}`);
     return {
       site: 'Amazon.it',
       price: null,

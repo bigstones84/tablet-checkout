@@ -8,7 +8,22 @@ describe('Config Module', () => {
     expect(PRODUCTS['samsung-tab-s10-fe-256gb'].threshold).toBe(350);
   });
 
-  it('should have exactly 1 product defined', () => {
-    expect(Object.keys(PRODUCTS)).toHaveLength(1);
+  it('should have retailers configuration for Samsung Tab S10 FE', () => {
+    const product = PRODUCTS['samsung-tab-s10-fe-256gb'];
+    expect(product.retailers).toBeDefined();
+    expect(product.retailers.amazon).toBeDefined();
+    expect(product.retailers.amazon?.asin).toBe('B0F3885QQK');
+  });
+
+  it('should have test product with retailers configuration', () => {
+    const testProduct = PRODUCTS['test-product'];
+    expect(testProduct).toBeDefined();
+    expect(testProduct.retailers).toBeDefined();
+    expect(testProduct.retailers.amazon).toBeDefined();
+    expect(testProduct.retailers.amazon?.asin).toBe('TEST_ASIN_123');
+  });
+
+  it('should have at least 2 products defined (including test product)', () => {
+    expect(Object.keys(PRODUCTS).length).toBeGreaterThanOrEqual(2);
   });
 });
