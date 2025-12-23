@@ -5,10 +5,10 @@ import nodemailer from 'nodemailer';
 
 describe('Notifier - Filter Logic', () => {
   const mockResults: PriceResult[] = [
-    { site: 'Amazon.it', price: 340, available: true, url: 'https://amazon.it/test' },
-    { site: 'Trovaprezzi', price: 380, available: true, url: 'https://trovaprezzi.it/test' },
-    { site: 'Idealo', price: 320, available: true, url: 'https://idealo.it/test' },
-    { site: 'Yeppon', price: null, available: false, url: 'https://yeppon.it/test' }
+    { site: 'Amazon.it', price: 340, available: true, url: 'https://amazon.it/test', productKey: 'samsung-tab-s10-fe-256gb' },
+    { site: 'Trovaprezzi', price: 380, available: true, url: 'https://trovaprezzi.it/test', productKey: 'samsung-tab-s10-fe-256gb' },
+    { site: 'Idealo', price: 320, available: true, url: 'https://idealo.it/test', productKey: 'samsung-tab-s10-fe-256gb' },
+    { site: 'Yeppon', price: null, available: false, url: 'https://yeppon.it/test', productKey: 'samsung-tab-s10-fe-256gb' }
   ];
 
   it('should filter results below threshold', () => {
@@ -41,9 +41,9 @@ describe('Notifier - Filter Logic', () => {
 describe.skip('Notifier - Email Preview (Manual Test with Ethereal)', () => {
   it('should send email and provide preview URL', async () => {
     const mockResults: PriceResult[] = [
-      { site: 'Amazon.it', price: 340, available: true, url: 'https://www.amazon.it/dp/ZACH0112SE' },
-      { site: 'Idealo', price: 320, available: true, url: 'https://www.idealo.it/test' },
-      { site: 'Trovaprezzi', price: 380, available: true, url: 'https://www.trovaprezzi.it/test' }
+      { site: 'Amazon.it', price: 340, available: true, url: 'https://www.amazon.it/dp/B0F3885QQK', productKey: 'samsung-tab-s10-fe-256gb' },
+      { site: 'Idealo', price: 320, available: true, url: 'https://www.idealo.it/test', productKey: 'samsung-tab-s10-fe-256gb' },
+      { site: 'Trovaprezzi', price: 380, available: true, url: 'https://www.trovaprezzi.it/test', productKey: 'samsung-tab-s10-fe-256gb' }
     ];
 
     // Create Ethereal test account

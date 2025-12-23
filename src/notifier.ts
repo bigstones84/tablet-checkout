@@ -18,14 +18,24 @@ export async function sendEmail(results: PriceResult[], recipient: string): Prom
   text += '\n---\n';
   text += 'This alert was sent by Tablet Price Monitor\n';
 
-  // Create transporter
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
+  // Create transporter (supports both Gmail and custom SMTP like Ethereal)
+  const transportConfig: any = {
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS
     }
-  });
+  };
+
+  // Use custom SMTP if configured (e.g., Ethereal for testing)
+  if (process.env.SMTP_HOST) {
+    transportConfig.host = process.env.SMTP_HOST;
+    transportConfig.port = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 587;
+  } else {
+    // Default to Gmail
+    transportConfig.service = 'gmail';
+  }
+
+  const transporter = nodemailer.createTransport(transportConfig);
 
   // Send email
   await transporter.sendMail({

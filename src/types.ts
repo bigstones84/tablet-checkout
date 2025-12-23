@@ -3,8 +3,9 @@ export interface PriceResult {
   price: number | null;
   available: boolean;
   url: string;
+  productKey: string;
 }
 
 export interface ScraperFunction {
-  (sku: string): Promise<PriceResult>;
+  (productKey: string): Promise<PriceResult>;
 }

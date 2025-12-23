@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { checkPrices } from './orchestrator';
 import { scrapeAmazon } from './scrapers/amazon';
 import { filterBelowThreshold, sendEmail } from './notifier';
@@ -14,19 +15,30 @@ async function main() {
   results.forEach(r => {
     const priceStr = r.price ? `€${r.price}` : 'N/A';
     const status = r.available ? '✓' : '✗';
-    console.log(`  ${status} ${r.site}: ${priceStr}`);
+    const productName = PRODUCTS[r.productKey]?.name || r.productKey;
+    console.log(`  ${status} ${r.site} [${productName}]: ${priceStr}`);
   });
 
-  // Check each product against its threshold
+  // Check each product against its specific threshold
   let dealsFound = false;
-  const allDeals = filterBelowThreshold(results, Math.max(...Object.values(PRODUCTS).map(p => p.threshold)));
+  const allDeals = results.filter(result => {
+    if (!result.price) return false;
+
+    // Find the threshold for this product
+    const productConfig = PRODUCTS[result.productKey];
+    if (!productConfig) return false;
+
+    return result.price < productConfig.threshold;
+  });
 
   if (allDeals.length > 0) {
     console.log(`\n🎯 Found ${allDeals.length} deal(s) below threshold!`);
     dealsFound = true;
 
     allDeals.forEach(deal => {
-      console.log(`   • ${deal.site}: €${deal.price} - ${deal.url}`);
+      const productName = PRODUCTS[deal.productKey]?.name || deal.productKey;
+      const threshold = PRODUCTS[deal.productKey]?.threshold;
+      console.log(`   • ${deal.site} [${productName}]: €${deal.price} (threshold: €${threshold}) - ${deal.url}`);
     });
 
     // Send email alert if configured

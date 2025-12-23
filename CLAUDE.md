@@ -1,31 +1,34 @@
 # Tablet Price Monitor
 
-**🚧 SESSION STATUS (20 Dec 2025):**
-- ✅ MVP COMPLETE! Core functionality working
-- ✅ Amazon scraper implemented and tested (finds real prices: €505.80, €249.99)
-- ✅ Orchestrator with dependency injection pattern
-- ✅ Email notifications (tested with Ethereal)
-- ✅ Filtering logic for threshold checks
-- ✅ All tests passing (17/17)
-- ⚠️ Main script (index.ts) created but needs testing/refinement
-- 📝 Next: Test full end-to-end flow, verify email with real SMTP
+**🚧 SESSION STATUS (23 Dec 2025):**
+- ✅ MVP COMPLETE with Samsung Galaxy Tab S10 FE
+- ✅ Amazon scraper refactored to use direct ASINs (more reliable!)
+- ✅ Product configuration updated to Samsung Tab S10 FE 256GB
+- ✅ All architecture refactored: sku → productKey (retailer-agnostic)
+- ✅ ASIN-based scraping: fetches exact product page (€379.99 verified)
+- ✅ All tests passing (17/17) and updated for new product
+- ✅ Config system supports easy product changes
+- 📝 Next: Add more retailers, externalize ASIN config
+- 📝 TODO: Price history tracking, GitHub Actions automation
 
-Automated price monitoring for Lenovo Tab P12 (128GB/256GB) across 5 Italian retailers with email alerts and price history tracking.
+Automated price monitoring for Samsung Galaxy Tab S10 FE (256GB) across Italian retailers with email alerts.
 
 ## Product Information
 
 See [product-info.md](./product-info.md) for detailed product specs and market analysis (in Italian).
 
-**SKUs:**
-- 128GB WiFi: `ZACH0112SE` (threshold: €350)
-- 256GB WiFi: `ZACH0204SE` (threshold: €400)
+**Current Product:**
+- Samsung Galaxy Tab S10 FE (256GB WiFi, 12GB RAM)
+- Product Key: `samsung-tab-s10-fe-256gb`
+- ASIN: `B0F3885QQK`
+- Target Price: €350 (current: €379.99)
 
 **Monitored Sites:**
-- Amazon.it
-- Trovaprezzi.it
-- Idealo.it
-- Yeppon
-- PcComponentes.it
+- Amazon.it (ASIN-based, implemented ✅)
+- Trovaprezzi.it (planned)
+- Idealo.it (planned)
+- Yeppon (planned)
+- PcComponentes.it (planned)
 
 ## Tech Stack
 

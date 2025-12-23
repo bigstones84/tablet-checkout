@@ -1,15 +1,11 @@
 export interface ProductConfig {
-  sku: string;
+  name: string;
   threshold: number;
 }
 
 export const PRODUCTS: Record<string, ProductConfig> = {
-  '128GB': {
-    sku: 'ZACH0112SE',
+  'samsung-tab-s10-fe-256gb': {
+    name: 'Samsung Galaxy Tab S10 FE (256GB WiFi, 12GB RAM)',
     threshold: 350
-  },
-  '256GB': {
-    sku: 'ZACH0204SE',
-    threshold: 400
   }
 };

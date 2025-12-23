@@ -5,13 +5,13 @@ export async function checkPrices(scrapers: ScraperFunction[]): Promise<PriceRes
   const results: PriceResult[] = [];
 
   // Run each scraper for each product
-  for (const [model, config] of Object.entries(PRODUCTS)) {
+  for (const [productKey, config] of Object.entries(PRODUCTS)) {
     for (const scraper of scrapers) {
       try {
-        const result = await scraper(config.sku);
+        const result = await scraper(productKey);
         results.push(result);
       } catch (error) {
-        console.error(`Error scraping ${model}:`, error);
+        console.error(`Error scraping ${config.name}:`, error);
         // Continue with other scrapers even if one fails
       }
     }

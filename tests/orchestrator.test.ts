@@ -31,6 +31,7 @@ describe('Orchestrator', () => {
       expect(result).toHaveProperty('price');
       expect(result).toHaveProperty('available');
       expect(result).toHaveProperty('url');
+      expect(result).toHaveProperty('productKey');
     });
   });
 
@@ -43,8 +44,8 @@ describe('Orchestrator', () => {
 
     const results = await checkPrices([mockScraper]);
 
-    // Should have one result per product (2 products configured)
-    expect(results.length).toBe(2);
+    // Should have one result per product (1 product configured)
+    expect(results.length).toBe(1);
   });
 
   it('should run multiple scrapers for each product', async () => {
@@ -62,8 +63,8 @@ describe('Orchestrator', () => {
 
     const results = await checkPrices([scraper1, scraper2]);
 
-    // Should have results from both scrapers for each product (2 products * 2 scrapers = 4)
-    expect(results.length).toBe(4);
+    // Should have results from both scrapers for each product (1 product * 2 scrapers = 2)
+    expect(results.length).toBe(2);
   });
 
   it('should handle scraper errors gracefully', async () => {
@@ -79,7 +80,7 @@ describe('Orchestrator', () => {
 
     const results = await checkPrices([throwingScraper, workingScraper]);
 
-    // Should still have results from working scraper
-    expect(results.length).toBe(2);
+    // Should still have results from working scraper (1 product * 1 working scraper = 1)
+    expect(results.length).toBe(1);
   });
 });
